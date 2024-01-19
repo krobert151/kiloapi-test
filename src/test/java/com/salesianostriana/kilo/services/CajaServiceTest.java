@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,8 +36,8 @@ class CajaServiceTest {
 
     @Test
     void editCaja() {
-
         Long id = 1L;
+
         Destinatario destinatario = Destinatario
                 .builder()
                 .id(id)
@@ -47,6 +48,7 @@ class CajaServiceTest {
                 .build();
 
         destinatarioRepository.save(destinatario);
+
         Caja caja = Caja
                 .builder()
                 .numCaja(2)
@@ -60,12 +62,14 @@ class CajaServiceTest {
 
         when(repository.findById(id)).thenReturn(Optional.of(caja));
 
-        service.editCaja(editCajaDTO, id);
+        Optional<Caja> resultado = service.editCaja(editCajaDTO, id);
 
-        assertEquals(service.editCaja(editCajaDTO, id), service.findById(id));
+        assertTrue(resultado.isPresent());
 
+        Caja cajaEditada = resultado.get();
+        assertEquals(cajaEditada, service.findById(id).get());
 
-
-
+        assertEquals(3, cajaEditada.getNumCaja());
+        assertEquals("kjshdflaksjdlkjdfaa", cajaEditada.getQr());
     }
 }
