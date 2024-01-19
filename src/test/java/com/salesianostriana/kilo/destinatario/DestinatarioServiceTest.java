@@ -51,6 +51,18 @@ public class DestinatarioServiceTest {
 
 
 
+    @Test
+    public void deleteById_voidData_DeletesDestinatario() {
+        Long id = 1L;
+        Destinatario destinatario = Destinatario.builder().build();
+        when(destinatarioRepository.findById(id)).thenReturn(Optional.of(destinatario));
+
+        destinatarioService.deleteById(id);
+
+        verify(destinatarioRepository, times(1)).delete(destinatario);
+    }
+
+
 
 
 }
